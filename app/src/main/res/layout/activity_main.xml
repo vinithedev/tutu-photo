@@ -28,9 +28,10 @@
         android:id="@+id/spinnerNetwork"
         android:layout_width="180dp"
         android:layout_height="23dp"
+        android:entries="@array/spinnerNetwork_arrays"
         android:spinnerMode="dropdown"
-        tools:layout_editor_absoluteX="135dp"
-        tools:layout_editor_absoluteY="147dp" />
+        tools:layout_editor_absoluteX="181dp"
+        tools:layout_editor_absoluteY="146dp" />
 
     <TextView
         android:id="@+id/textViewNetwork"

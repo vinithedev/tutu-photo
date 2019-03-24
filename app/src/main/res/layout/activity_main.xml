@@ -4,148 +4,196 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/textViewNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Number:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="74dp" />
-
-    <TextView
-        android:id="@+id/textViewId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ID:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="27dp" />
 
     <Spinner
         android:id="@+id/spinnerNetwork"
-        android:layout_width="180dp"
-        android:layout_height="23dp"
-        android:entries="@array/spinnerNetwork_arrays"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
         android:spinnerMode="dropdown"
-        tools:layout_editor_absoluteX="181dp"
-        tools:layout_editor_absoluteY="146dp" />
-
-    <TextView
-        android:id="@+id/textViewNetwork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Network:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="146dp" />
-
-    <TextView
-        android:id="@+id/textViewEquipmentInstalation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Equipment instalation:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="212dp" />
-
-    <TextView
-        android:id="@+id/textViewAntennaInstalation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Antenna instalation:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="267dp" />
-
-    <TextView
-        android:id="@+id/textViewConnection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connection:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="321dp" />
-
-    <TextView
-        android:id="@+id/textViewObservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Observation:"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="396dp" />
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
 
     <Button
         android:id="@+id/buttonClean"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:background="#008577"
         android:text="Clean"
-        tools:layout_editor_absoluteX="47dp"
-        tools:layout_editor_absoluteY="496dp" />
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextObservation"
+        app:layout_constraintVertical_bias="0.504" />
 
     <Button
         android:id="@+id/buttonNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:background="#008577"
         android:text="Next"
-        tools:layout_editor_absoluteX="273dp"
-        tools:layout_editor_absoluteY="496dp" />
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextObservation"
+        app:layout_constraintVertical_bias="0.504" />
 
     <EditText
         android:id="@+id/editTextId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="ID"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="135dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Number"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="135dp"
-        tools:layout_editor_absoluteY="75dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextId" />
 
     <EditText
         android:id="@+id/editTextEquipmentInstalation"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Equipment Instalation"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="218dp"
-        tools:layout_editor_absoluteY="198dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerNetwork" />
 
     <EditText
         android:id="@+id/editTextAntennaInstalation"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Antenna Instalation"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="218dp"
-        tools:layout_editor_absoluteY="257dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEquipmentInstalation" />
 
     <EditText
         android:id="@+id/editTextConnection"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Connection"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="218dp"
-        tools:layout_editor_absoluteY="313dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAntennaInstalation" />
 
     <EditText
         android:id="@+id/editTextObservation"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Observation"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="218dp"
-        tools:layout_editor_absoluteY="375dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextConnection" />
+
+    <ImageView
+        android:id="@+id/imageViewId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+        app:layout_constraintEnd_toStartOf="@+id/editTextId"
+        app:layout_constraintTop_toTopOf="@+id/editTextId"
+        app:srcCompat="@drawable/icon_id" />
+
+    <ImageView
+        android:id="@+id/imageViewNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumber"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumber"
+        app:srcCompat="@drawable/icon_number" />
+
+    <ImageView
+        android:id="@+id/imageViewNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerNetwork"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerNetwork"
+        app:layout_constraintTop_toTopOf="@+id/spinnerNetwork"
+        app:srcCompat="@drawable/icon_network" />
+
+    <ImageView
+        android:id="@+id/imageViewEquipmentInstalation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextEquipmentInstalation"
+        app:layout_constraintEnd_toStartOf="@+id/editTextEquipmentInstalation"
+        app:layout_constraintTop_toTopOf="@+id/editTextEquipmentInstalation"
+        app:srcCompat="@drawable/icon_equipment" />
+
+    <ImageView
+        android:id="@+id/imageViewAntennaInstalation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextAntennaInstalation"
+        app:layout_constraintEnd_toStartOf="@+id/editTextAntennaInstalation"
+        app:layout_constraintTop_toTopOf="@+id/editTextAntennaInstalation"
+        app:srcCompat="@drawable/icon_antenna" />
+
+    <ImageView
+        android:id="@+id/imageViewConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextConnection"
+        app:layout_constraintEnd_toStartOf="@+id/editTextConnection"
+        app:layout_constraintTop_toTopOf="@+id/editTextConnection"
+        app:srcCompat="@drawable/icon_connection" />
+
+    <ImageView
+        android:id="@+id/imageViewObservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextObservation"
+        app:layout_constraintEnd_toStartOf="@+id/editTextObservation"
+        app:layout_constraintTop_toTopOf="@+id/editTextObservation"
+        app:srcCompat="@drawable/icon_observation" />
 
 </android.support.constraint.ConstraintLayout>

@@ -5,8 +5,8 @@ Custom android picture taker
 
 Before taking a picture, the user must inform:
 
-* ID*****: 
-* Number*****: 
+* ID__*__: 
+* Number__*__: 
 * Network: (primary, secondary or both)
 * Equipment instalation: 
 * Antenna instalation: 

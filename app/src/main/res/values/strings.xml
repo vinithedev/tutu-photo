@@ -1,5 +1,5 @@
 <resources>
-    <!--<string name="app_name">Tutu Photo</string>-->
+    <string name="app_name">Tutu Photo</string>
     <!--<string name="spinnerNetwork_title">Choose a Network</string>-->
 
     <!--<string-array name="spinnerNetwork_arrays">-->

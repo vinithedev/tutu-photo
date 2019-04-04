@@ -1,11 +1,4 @@
 <resources>
     <string name="app_name">Tutu Photo</string>
-    <!--<string name="spinnerNetwork_title">Choose a Network</string>-->
-
-    <!--<string-array name="spinnerNetwork_arrays">-->
-        <!--<item>Primary</item>-->
-        <!--<item>Secondary</item>-->
-        <!--<item>Primary and Secondary</item>-->
-    <!--</string-array>-->
 
 </resources>

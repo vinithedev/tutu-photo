@@ -18,7 +18,7 @@ Before taking a picture, the user must inform:
 *_Will be visible in the picture afterwards_
 
 ## Output
-
+* The app will return a raw copy of the picture.
 * The app will return a picture with the **ID** and **Number** as follows: 
 
 ![Tutu sample](https://i.imgur.com/mCkL0Je.jpg)

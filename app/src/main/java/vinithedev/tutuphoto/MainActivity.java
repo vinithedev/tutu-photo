@@ -1,29 +1,35 @@
 package vinithedev.tutuphoto;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -33,12 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
-    ImageView imageView;
     Context context = MainActivity.this;
-    String pathToFile, fileName, dirString;
-    Intent mediaScanIntent;
-    Uri contentUri;
-    File image = null;
+    String pathToFile, fileName, dirString, dirStringOriginal;
+    File image, imageOriginal, DCIMDir = null;
 
     static final int REQUEST_PERMISSIONS = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -71,12 +74,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //Open camera -> Save picture in determined location, with determined file name -> Scan file, so gallery will show it
+                //Open camera -> Take picture -> Save picture -> Create a copy of it -> Draw square and text on the first file -> Scan both files so ir shows on gallery
                 dispatchPictureTakerAction();
             }
 
         });
-        imageView = findViewById(R.id.imageView);
 
         //Spinner's HINT
         final Spinner spinner = (Spinner) findViewById(R.id.spinnerNetwork);
@@ -90,15 +92,14 @@ public class MainActivity extends AppCompatActivity {
                     ((TextView) v.findViewById(android.R.id.text1)).setText("");
                     ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
-
                 return v;
             }
 
             @Override
             public int getCount() {
-                return super.getCount() - 1; //You dont display last item. It is used as hint.
+                //You dont display last item. It is used as hint
+                return super.getCount() - 1;
             }
-
         };
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.add("Network"); //HINT
 
         spinner.setAdapter(adapter);
-        spinner.setSelection(adapter.getCount()); //Set the hint the default selection so it appears on launch.
+
+        //Set the hint the default selection so it appears on launch
+        spinner.setSelection(adapter.getCount());
 
         buttonClean = (Button) findViewById(R.id.buttonClean);
 
@@ -134,11 +137,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Runs after some event is completed
+    //Is called after startActivityForResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_IMAGE_CAPTURE){
+
+            //Copy the picture before drawing, so that we can have a backup
+            try {
+                copy(image, imageOriginal);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Scan image so that it shows on gallery
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(image)));
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageOriginal)));
+
+            //Write text on picture
+            String filePath = image.getPath();
+            Bitmap firstbm = BitmapFactory.decodeFile(filePath);
+
+            Bitmap bmp = addTextToImage(firstbm, editTextId.getText().toString(), editTextNumber.getText().toString(), Color.BLACK, 255, false);
+            File f = new File(DCIMDir.getPath() + File.separator + "/Tutu/" + "TUTU_" + fileName + ".jpg");
+
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
         }
     }
 
@@ -164,16 +192,66 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public Bitmap addTextToImage(Bitmap source, String txtId, String txtNumber, int color, int alpha, boolean underline) {
+
+        //Define dimensions
+        int w = source.getWidth();
+        int h = source.getHeight();
+        Bitmap result = Bitmap.createBitmap(w, h, source.getConfig());
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(source, 0, 0, null);
+        Paint paint = new Paint();
+
+        //Define position
+        int rectLeft = 1;
+        int rectTop = h-(h/4);
+        int rectRight = w/3;
+        int rectBottom = h-1;
+
+        Rect r = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+
+        //Draw white rect
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(r, paint);
+
+        int xCenter = r.centerX();
+        int yCenter = r.centerY();
+
+        //Draw black edge
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.BLACK);
+        canvas.drawRect(r, paint);
+
+        //Text settings
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(color);
+
+        //Opacity(0~255)
+        paint.setAlpha(alpha);
+
+        paint.setTextSize(w/24);
+        paint.setAntiAlias(true);
+        paint.setUnderlineText(underline);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        //Id and Number drawings
+        canvas.drawText(txtId, rectRight/2, yCenter-(h-yCenter)/3, paint);
+        canvas.drawText(txtNumber, rectRight/2, yCenter, paint);
+
+        return result;
+    }
+
     private File createPhotoFile() {
 
         //File name format
         fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
         //Declares storage's directory
-        File DCIMDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        DCIMDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         dirString = DCIMDir.getAbsolutePath() + "/Tutu/";
 
-        //If folder doesn't exists, create it
+        //If folder and/or subfolder doesn't exists, create it
         File directory = new File(dirString);
         if (! directory.exists()){
             directory.mkdirs();
@@ -181,8 +259,28 @@ public class MainActivity extends AppCompatActivity {
 
         //Set final file directory and name, create it and return.
         dirString = DCIMDir.getAbsolutePath() + "/Tutu/" + "TUTU_" + fileName + ".jpg";
+
+        //Copy file path, but with slightly different name
+        dirStringOriginal = DCIMDir.getAbsolutePath() + "/Tutu/" + "TUTU_O_" + fileName + ".jpg";;
+
         image = new File(dirString);
+
+        //Initializes copy file
+        imageOriginal = new File(dirStringOriginal);
+
+        //Return only the first image. The copy will be created later.
         return image;
+    }
+
+    //Copies a file
+    public void copy(File src, File dst) throws IOException {
+        FileInputStream inStream = new FileInputStream(src);
+        FileOutputStream outStream = new FileOutputStream(dst);
+        FileChannel inChannel = inStream.getChannel();
+        FileChannel outChannel = outStream.getChannel();
+        inChannel.transferTo(0, inChannel.size(), outChannel);
+        inStream.close();
+        outStream.close();
     }
 
     //Checks multiple permissions

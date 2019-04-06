@@ -33,6 +33,9 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import word.api.interfaces.IDocument;
+import word.w2004.Document2004;
+
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,6 +1,8 @@
 # Tutu Photo
 Custom android picture taker
 
+# USE CASE
+
 ## Input
 
 Before taking a picture, the user must inform:
@@ -16,7 +18,7 @@ Before taking a picture, the user must inform:
 *_Will be visible in the picture afterwards_
 
 ## Output
-
+* The app will return a raw copy of the picture.
 * The app will return a picture with the **ID** and **Number** as follows: 
 
 ![Tutu sample](https://i.imgur.com/mCkL0Je.jpg)
@@ -24,3 +26,5 @@ Before taking a picture, the user must inform:
 * Automatically, the app will locate user's current **latitude** and **longitude**.
 
 * One of each **.doc** and **.xls** files will be created to store all the data(if not created yet).
+
+* Pictures will be stored at ***/storage/emulated/0/DCIM/Tutu*** with ***TUTU_yyyyMMdd_HHmmss.jpg*** name format

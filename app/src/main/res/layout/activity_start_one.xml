@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartOne">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:textSize="25dp"
+        android:text="Pressing this button, will request you to take 5 photos.\n\nThe first one, will usually be the Street Pole one.\n\nThe other 4, the main cardinal directions(North, South, East, West)." />
+
+    <Button
+        android:id="@+id/buttonStartInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Input" />
+
+</RelativeLayout>

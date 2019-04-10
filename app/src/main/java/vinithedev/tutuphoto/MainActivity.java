@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,9 +38,6 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import word.api.interfaces.IDocument;
-import word.w2004.Document2004;
-
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     Context context = MainActivity.this;
     String pathToFile, fileName, dirString, dirStringOriginal;
     File image, imageOriginal, DCIMDir = null;
+    File docPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
 
     static final int REQUEST_PERMISSIONS = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -60,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Fixes XWPFDocument's error
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
 
         //Handle permissions
         //
@@ -136,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 editTextConnection.setText("");
                 editTextObservation.setText("");
                 spinner.setSelection(adapter.getCount());
+
+                Log.v("MyTAG", docPath.getAbsolutePath());
+                    createDocx(docPath, "oi");
+
             }
         });
     }
@@ -296,6 +308,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private void createDocx(File path, String message){
+        try {
+            XWPFDocument document = new XWPFDocument();
+
+            FileOutputStream outputStream = new FileOutputStream(new File(path, "/poi.docx"));
+
+            XWPFParagraph paragraph = document.createParagraph();
+            XWPFRun run = paragraph.createRun();
+            run.setText(message);
+
+            document.write(outputStream);
+            outputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

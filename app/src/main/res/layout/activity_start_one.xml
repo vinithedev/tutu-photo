@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".StartOne">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:textSize="25dp"
-        android:text="Pressing this button, will request you to take 5 photos.\n\nThe first one, will usually be the Street Pole one.\n\nThe other 4, the main cardinal directions(North, South, East, West)." />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".StartOne">
 
-    <Button
-        android:id="@+id/buttonStartInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Input" />
+        <TextView
+            android:id="@+id/textViewPressing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="30dp"
+            android:layout_below="@id/buttonStartInput"
+            android:layout_marginTop="40dp"
+            android:textSize="20dp"
+            android:text="Pressing this button, will request you to take 5 photos.\n\nThe first one, will usually be the Street Pole one.\n\nThe other 4, the main cardinal directions(North, South, East, West)." />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/buttonStartInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#008577"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="40dp"
+            android:autoSizeTextType="uniform"
+            android:layout_centerHorizontal="true"
+            android:text="Start Input" />
+
+    </RelativeLayout>
+</ScrollView>

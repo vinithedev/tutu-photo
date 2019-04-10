@@ -40,11 +40,11 @@ import java.util.Date;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
-public class MainActivity extends AppCompatActivity {
+public class StreetPoleTwo extends AppCompatActivity {
 
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
-    Context context = MainActivity.this;
+    Context context = StreetPoleTwo.this;
     String pathToFile, fileName, dirString, dirStringOriginal;
     File image, imageOriginal, DCIMDir = null;
     File docPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);

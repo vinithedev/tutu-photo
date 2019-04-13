@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".StartOne">
+
+        <TextView
+            android:id="@+id/textViewPressing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buttonStartInput"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:text="Press BEGIN to start the application. You'll be requested to take 5 photos.\n\nThe first one, will usually be the Street Pole one.\n\nThe other 4, the main cardinal directions(North, South, East, West)."
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonStartInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#008577"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="40dp"
+            android:textSize="25dp"
+            android:layout_centerHorizontal="true"
+            android:text="Begin" />
+
+    </RelativeLayout>
+</ScrollView>

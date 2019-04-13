@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".StreetPoleTwo">
+
+        <Spinner
+            android:id="@+id/spinnerNetwork"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:spinnerMode="dropdown"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+
+        <EditText
+            android:id="@+id/editTextEquipmentInstalation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Equipment Instalation"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerNetwork" />
+
+        <ImageView
+            android:id="@+id/imageViewEquipmentInstalation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextEquipmentInstalation"
+            app:layout_constraintEnd_toStartOf="@+id/editTextEquipmentInstalation"
+            app:layout_constraintTop_toTopOf="@+id/editTextEquipmentInstalation"
+            app:srcCompat="@drawable/icon_equipment" />
+
+        <EditText
+            android:id="@+id/editTextObservation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Observation"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextConnection" />
+
+        <ImageView
+            android:id="@+id/imageViewAntennaInstalation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextAntennaInstalation"
+            app:layout_constraintEnd_toStartOf="@+id/editTextAntennaInstalation"
+            app:layout_constraintTop_toTopOf="@+id/editTextAntennaInstalation"
+            app:srcCompat="@drawable/icon_antenna" />
+
+        <EditText
+            android:id="@+id/editTextId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="ID"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonClean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="#008577"
+            android:text="Clean"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextObservation"
+            app:layout_constraintVertical_bias="0.504" />
+
+        <EditText
+            android:id="@+id/editTextAntennaInstalation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Antenna Instalation"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEquipmentInstalation" />
+
+        <ImageView
+            android:id="@+id/imageViewObservation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextObservation"
+            app:layout_constraintEnd_toStartOf="@+id/editTextObservation"
+            app:layout_constraintTop_toTopOf="@+id/editTextObservation"
+            app:srcCompat="@drawable/icon_observation" />
+
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="#008577"
+            android:text="Next"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextObservation"
+            app:layout_constraintVertical_bias="0.504" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Number"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextId" />
+
+        <ImageView
+            android:id="@+id/imageViewConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextConnection"
+            app:layout_constraintEnd_toStartOf="@+id/editTextConnection"
+            app:layout_constraintTop_toTopOf="@+id/editTextConnection"
+            app:srcCompat="@drawable/icon_connection" />
+
+        <EditText
+            android:id="@+id/editTextConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Connection"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAntennaInstalation" />
+
+        <ImageView
+            android:id="@+id/imageViewId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+            app:layout_constraintEnd_toStartOf="@+id/editTextId"
+            app:layout_constraintTop_toTopOf="@+id/editTextId"
+            app:srcCompat="@drawable/icon_id" />
+
+        <ImageView
+            android:id="@+id/imageViewNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumber"
+            app:layout_constraintEnd_toStartOf="@+id/editTextNumber"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumber"
+            app:srcCompat="@drawable/icon_number" />
+
+        <ImageView
+            android:id="@+id/imageViewNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerNetwork"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerNetwork"
+            app:layout_constraintTop_toTopOf="@+id/spinnerNetwork"
+            app:srcCompat="@drawable/icon_network" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -8,12 +8,15 @@ import android.widget.Button;
 
 public class StartOne extends AppCompatActivity {
 
+    StreetPoleTwo spt = new StreetPoleTwo();
     private Button buttonStartInput;
+    MyManager mm = new MyManager(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_one);
+        setTitle(R.string.start_one);
 
         buttonStartInput = findViewById(R.id.buttonStartInput);
         buttonStartInput.setOnClickListener(new View.OnClickListener() {
@@ -22,7 +25,9 @@ public class StartOne extends AppCompatActivity {
                 openActivityStreetPoleTwo();
             }
         });
-
+        mm.hasPermissions();
+        mm.checkDir();
+        mm.fileExists();
     }
 
     public void openActivityStreetPoleTwo(){

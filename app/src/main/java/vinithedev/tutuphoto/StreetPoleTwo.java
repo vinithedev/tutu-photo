@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -42,12 +43,19 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class StreetPoleTwo extends AppCompatActivity {
 
+    MyManager mm = new MyManager(this);
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
     Context context = StreetPoleTwo.this;
     String pathToFile, fileName, dirString, dirStringOriginal;
     File image, imageOriginal, DCIMDir = null;
     File docPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
+//    File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+//    String tutuDocDir = docDir.getAbsolutePath() + "/Tutu/";
+//
+//
+    Toast toast;
 
     static final int REQUEST_PERMISSIONS = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -62,9 +70,10 @@ public class StreetPoleTwo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_street_pole_two);
+        setTitle(R.string.street_pole_two);
 
-        //Fixes XWPFDocument's error
+        //Fixes Apache POI error
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
         System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
@@ -75,9 +84,9 @@ public class StreetPoleTwo extends AppCompatActivity {
         //even if the app targets a lower API level. So even if the app used the camera yesterday,
         //it can't assume it still has that permission today.
 
-        if(!hasPermissions(this, PERMISSIONS)){
-            ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSIONS);
-        }
+//        if(!hasPermissions(this, PERMISSIONS)){
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSIONS);
+//        }
 
         //Button NEXT(Start Camera)
         buttonNext = findViewById(R.id.buttonNext);
@@ -145,8 +154,114 @@ public class StreetPoleTwo extends AppCompatActivity {
                 editTextObservation.setText("");
                 spinner.setSelection(adapter.getCount());
 
-                Log.v("MyTAG", docPath.getAbsolutePath());
-                    createDocx(docPath, "oi");
+//                toast = toast.makeText(context, "eae men", Toast.LENGTH_SHORT);
+//                toast.show();
+
+//                eae();
+//                Log.v("MyTAG", directory.getAbsolutePath());
+//                    createDocx(directory, "oi");
+
+//                Workbook wb = new HSSFWorkbook();
+//                Cell c = null;
+//                CellStyle cs = wb.createCellStyle();
+//                cs.setFillForegroundColor(HSSFColor.LIME.index);
+//                cs.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+//                Sheet sheet1 = null;
+//                sheet1 = wb.createSheet("myOrder");
+//                Row row = sheet1.createRow(0);
+//                c = row.createCell(0);
+//                c.setCellValue("Item Number");
+//                c.setCellStyle(cs);
+//                c = row.createCell(1);
+//                c.setCellValue("Quantity");
+//                c.setCellStyle(cs);
+//                c = row.createCell(2);
+//                c.setCellValue("Price");
+//                c.setCellStyle(cs);
+//                sheet1.setColumnWidth(0, (15 * 500));
+//                sheet1.setColumnWidth(1, (15 * 500));
+//                sheet1.setColumnWidth(2, (15 * 500));
+
+
+
+
+
+
+//                    try{
+//                        // Creating Input Stream
+//                        File file = new File(mm.tutuDocDir, mm.FILENAMES[1]);
+//                        FileInputStream myInput = new FileInputStream(file);
+//
+//                        // Create a POIFSFileSystem object
+//                        POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
+//
+//                        // Create a workbook using the File System
+//                        HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
+//
+//                        // Get the first sheet from workbook
+//                        HSSFSheet mySheet = myWorkBook.getSheetAt(0);
+//
+//                        /** We now need something to iterate through the cells.**/
+//                        Iterator rowIter = mySheet.rowIterator();
+//
+//                        while(rowIter.hasNext()){
+//                            HSSFRow myRow = (HSSFRow) rowIter.next();
+//                            Iterator cellIter = myRow.cellIterator();
+//                            while(cellIter.hasNext()){
+//                                HSSFCell myCell = (HSSFCell) cellIter.next();
+//                                Log.v("MyTAG", "Cell Value: " +  myCell.toString());
+//                                Toast.makeText(context, "cell Value: " + myCell.toString(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }catch (Exception e){e.printStackTrace(); }
+
+
+
+
+//
+//                try {
+
+//                    FileInputStream file = new FileInputStream(new File(mm.tutuDocDir, mm.FILENAMES[1]));
+
+
+
+//opa();
+
+//                try
+//                {
+//                    FileInputStream inp = new FileInputStream(new File(mm.tutuDocDir, mm.FILENAMES[3]));
+//                    Workbook wb = WorkbookFactory.create(inp);
+//                    Sheet sheet = wb.getSheetAt(0);
+//                    int num = sheet.getLastRowNum();
+//                    Row row = sheet.createRow(++num);
+//                    row.createCell(0).setCellValue("xyz");
+//                    FileOutputStream fileOut = new FileOutputStream(new File(mm.tutuDocDir, mm.FILENAMES[3]));
+//                    wb.write(fileOut);
+//                    fileOut.close();
+//                }
+//                catch(Exception e)
+//                {
+//                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             }
         });
@@ -298,17 +413,27 @@ public class StreetPoleTwo extends AppCompatActivity {
         outStream.close();
     }
 
-    //Checks multiple permissions
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//    //Checks multiple permissions
+//    public static boolean hasPermissions(Context context, String... permissions) {
+//        if (context != null && permissions != null) {
+//            for (String permission : permissions) {
+//                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
+
+//    public void eae(){
+//
+//        createDocx(docPath, "file has been saved");
+//
+//        Log.v("MyTAG", docPath.getAbsolutePath());
+//
+////        toast = toast.makeText(context, "Saved at: " + docPath.getAbsolutePath(), Toast.LENGTH_SHORT);
+////        toast.show();
+//    }
 
     private void createDocx(File path, String message){
         try {

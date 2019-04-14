@@ -4,32 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class StreetPoleTwo extends AppCompatActivity {
 
@@ -37,6 +33,9 @@ public class StreetPoleTwo extends AppCompatActivity {
 
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
+    ImageView imageViewId, imageViewNumber, imageViewNetwork,imageViewEquipmentInstalation, imageViewAntennaInstalation, imageViewConnection, imageViewObservation;
+    Spinner spinner;
+//    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
     //Called when the activity is starting. This is where most initialization should go.
     @Override
@@ -45,11 +44,57 @@ public class StreetPoleTwo extends AppCompatActivity {
         setContentView(R.layout.activity_street_pole_two);
         setTitle(R.string.street_pole_two);
 
+        editTextId = (EditText) findViewById(R.id.editTextId);
+        editTextNumber = (EditText) findViewById(R.id.editTextNumber);
+        spinner = (Spinner) findViewById(R.id.spinnerNetwork);
+        editTextEquipmentInstalation = (EditText) findViewById(R.id.editTextEquipmentInstalation);
+        editTextAntennaInstalation = (EditText) findViewById(R.id.editTextAntennaInstalation);
+        editTextConnection = (EditText) findViewById(R.id.editTextConnection);
+        editTextObservation = (EditText) findViewById(R.id.editTextObservation);
+
+        imageViewId = (ImageView) findViewById(R.id.imageViewId);
+        imageViewNumber = (ImageView) findViewById(R.id.imageViewNumber);
+        imageViewNetwork = (ImageView) findViewById(R.id.imageViewNetwork);
+        imageViewEquipmentInstalation = (ImageView) findViewById(R.id.imageViewEquipmentInstalation);
+        imageViewAntennaInstalation = (ImageView) findViewById(R.id.imageViewAntennaInstalation);
+        imageViewConnection = (ImageView) findViewById(R.id.imageViewConnection);
+        imageViewObservation = (ImageView) findViewById(R.id.imageViewObservation);
+
+        if(mm.getPoleOrDirection() == "Direction") {
+//            editTextId.setVisibility(View.GONE);
+//            editTextNumber.setVisibility(View.GONE);
+//            spinner.setVisibility(View.GONE);
+            editTextEquipmentInstalation.setVisibility(View.GONE);
+            editTextAntennaInstalation.setVisibility(View.GONE);
+            editTextConnection.setVisibility(View.GONE);
+            editTextObservation.setVisibility(View.GONE);
+
+//            imageViewId.setVisibility(View.GONE);
+//            imageViewNumber.setVisibility(View.GONE);
+//            imageViewNetwork.setVisibility(View.GONE);
+            imageViewEquipmentInstalation.setVisibility(View.GONE);
+            imageViewAntennaInstalation.setVisibility(View.GONE);
+            imageViewConnection.setVisibility(View.GONE);
+            imageViewObservation.setVisibility(View.GONE);
+        }
+
         //Button NEXT(Start Camera)
         buttonNext = findViewById(R.id.buttonNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mm.editTextId = String.valueOf(editTextId.getText());
+                mm.editTextNumber = String.valueOf(editTextNumber.getText());
+                mm.editTextEquipmentInstalation = String.valueOf(editTextEquipmentInstalation.getText());
+                mm.editTextAntennaInstalation = String.valueOf(editTextAntennaInstalation.getText());
+                mm.editTextConnection = String.valueOf(editTextConnection.getText());
+                mm.editTextObservation = String.valueOf(editTextObservation.getText());
+
+                mm.spinnerNetwork = spinner.getSelectedItem().toString();
+
+                //Check docx last append
+                mm.readDocx();
 
                 //Open camera -> Take picture -> Save picture -> Create a copy of it -> Draw square and text on the first file -> Scan both files so ir shows on gallery
                 dispatchPictureTakerAction();
@@ -58,7 +103,6 @@ public class StreetPoleTwo extends AppCompatActivity {
         });
 
         //Spinner's HINT
-        final Spinner spinner = (Spinner) findViewById(R.id.spinnerNetwork);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item) {
 
             @Override
@@ -80,10 +124,19 @@ public class StreetPoleTwo extends AppCompatActivity {
         };
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.add("Primary");
-        adapter.add("Secondary");
-        adapter.add("Primary and Secondary");
-        adapter.add("Network"); //HINT
+
+        if(mm.getPoleOrDirection() == "Direction") {
+            adapter.add("Norte");
+            adapter.add("Sul");
+            adapter.add("Leste");
+            adapter.add("Oeste");
+            adapter.add("Ponto Cardeal"); //HINT
+        }else {
+            adapter.add("Primária");
+            adapter.add("Secundária");
+            adapter.add("Primária e Secundária");
+            adapter.add("Rede"); //HINT
+        }
 
         spinner.setAdapter(adapter);
 
@@ -91,13 +144,6 @@ public class StreetPoleTwo extends AppCompatActivity {
         spinner.setSelection(adapter.getCount());
 
         buttonClean = (Button) findViewById(R.id.buttonClean);
-
-        editTextId = (EditText) findViewById(R.id.editTextId);
-        editTextNumber = (EditText) findViewById(R.id.editTextNumber);
-        editTextEquipmentInstalation = (EditText) findViewById(R.id.editTextEquipmentInstalation);
-        editTextAntennaInstalation = (EditText) findViewById(R.id.editTextAntennaInstalation);
-        editTextConnection = (EditText) findViewById(R.id.editTextConnection);
-        editTextObservation = (EditText) findViewById(R.id.editTextObservation);
 
         //Button CLEAN clicked
         buttonClean.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +186,10 @@ public class StreetPoleTwo extends AppCompatActivity {
     //Creates picture file
     private File createPhotoFile() {
 
+        mm.firstImgFinalName = mm.getFirstImageName();
+
         //Couldn't save image outside of DCIM
-        mm.imageFile = new File(mm.tutuDCIMDir + mm.getFirstImageName());
+        mm.imageFile = new File(mm.tutuDCIMDir + mm.firstImgFinalName);
 
         //Initializes copy file
         mm.imageFileOriginal = new File(mm.tutuDCIMDir + mm.firstImageNameOriginal);
@@ -153,6 +201,12 @@ public class StreetPoleTwo extends AppCompatActivity {
     //Is called after startActivityForResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        mm.longitude = location.getLongitude();
+        mm.latitude = location.getLatitude();
+
         if(requestCode == mm.REQUEST_IMAGE_CAPTURE){
 
             //Copy the picture before drawing, so that we can have a backup
@@ -181,7 +235,10 @@ public class StreetPoleTwo extends AppCompatActivity {
             }
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
         }
+        mm.appendImage();
     }
+
+
 
 
 

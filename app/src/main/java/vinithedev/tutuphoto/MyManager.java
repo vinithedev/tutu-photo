@@ -5,17 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.location.LocationManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.widget.Toast;
 
-import org.apache.poi.POITextExtractor;
-import org.apache.poi.extractor.ExtractorFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -23,30 +21,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.TextAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFAbstractNum;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFNumbering;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.apache.xmlbeans.XmlException;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTAbstractNum;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTLvl;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTNumbering;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STNumberFormat;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -59,10 +43,27 @@ public class MyManager {
 
     int imgNum;
 
-    float latitude, longitude;
+    public String getPoleOrDirection() {
+        return poleOrDirection;
+    }
 
-    String id, number, network, equipmentInstalation, antennaInstalation, connection, observation, firstImgName;
-    String firstImageName, firstImageNameOriginal, pathToFile;
+    public void setPoleOrDirection(String poleOrDirection) {
+        this.poleOrDirection = poleOrDirection;
+    }
+
+    public static String poleOrDirection = "Pole";
+
+    public boolean myPole = true;
+
+    double latitude, longitude;
+
+    // null, "First Image" , "Other Image" or "Very First Image"
+    String nextAppendType;
+
+    String id, number, network, equipmentInstalation, antennaInstalation, connection, observation;
+    String firstImageName, firstImageNameOriginal, pathToFile, firstImgName, firstImgFinalName;
+    String editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation, spinnerNetwork;
+
     File imageFile, imageFileOriginal = null;
 
     File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
@@ -97,7 +98,9 @@ public class MyManager {
     String[] PERMISSIONS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
 
     //If folder and/or subfolder doesn't exists, create it
@@ -194,7 +197,7 @@ public class MyManager {
     }
 
     //Append first image into the .docx file
-    public void appendFirstImage(){
+    public void appendImage(){
 
         //Fixes Apache POI error
         System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
@@ -208,23 +211,82 @@ public class MyManager {
             XWPFParagraph paragraph =  paragraphs.get(paragraphs.size() - 1);
             XWPFRun run = paragraph.createRun();
 
+            if (nextAppendType == "Very First Image"){
+                run = paragraph.createRun();
+                run.setBold(true);
+                run.setFontFamily("Trebuchet MS");
+                run.setFontSize(11);
+                run.addBreak();
+                run.addBreak();
+                run.setText("   4.1. " + editTextId + "es");
+                run.addBreak();
+                run.addBreak();
+                run.setText("      4.1." + editTextNumber + ". " + editTextId + " " + editTextNumber);
+                run.addBreak();
+            }else if(getPoleOrDirection() == "Direction") {
+                //Write nothing yet
+            }else{
+                run = paragraph.createRun();
+                run.setBold(true);
+                run.setFontFamily("Trebuchet MS");
+                run.setFontSize(11);
+                run.addBreak();
+                run.addBreak();
+                run.setText("      4.1." + editTextNumber + ". " + editTextId + " " + editTextNumber);
+                run.addBreak();
+            }
+
             XWPFParagraph paragraphImg = document.createParagraph();
             XWPFRun runImg = paragraphImg.createRun();
 
-            FileInputStream image_fis = new FileInputStream(tutuDocDir + firstImgName);
+            FileInputStream image_fis = new FileInputStream(tutuDCIMDir + firstImgFinalName);
             paragraphImg.setAlignment(ParagraphAlignment.CENTER);
 
             try {
-                runImg.addPicture(image_fis, XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(firstImgW), Units.toEMU(firstImgH));
+                if(getPoleOrDirection() == "Direction") {
+                    runImg.addPicture(image_fis, XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(otherImgW), Units.toEMU(otherImgH));
+                }else {
+                    runImg.addPicture(image_fis, XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(firstImgW), Units.toEMU(firstImgH));
+                }
+
             } catch (InvalidFormatException e) { e.printStackTrace(); }
 
             XWPFParagraph paragraphLast =  paragraphs.get(paragraphs.size() - 1);
             XWPFRun runLast = paragraphLast.createRun();
             runLast.addBreak();
+            runLast.setBold(false);
             runLast.setItalic(true);
             runLast.setFontFamily("Trebuchet MS");
-            runLast.setFontSize(11);
-            runLast.setText("Figura " + imgNum + " - Poste do " + id + " " + number);
+            runLast.setFontSize(9);
+
+            if(getPoleOrDirection() == "Pole") {
+                runLast.setText("Figura " + editTextNumber + " - Poste do " + editTextId + " " + editTextNumber);
+
+                runLast.addBreak();
+                runLast.setFontFamily("Trebuchet MS");
+                runLast.setFontSize(11);
+                runLast.setText("Identificação: " + editTextId);
+                runLast.addBreak();
+                runLast.setText("Número: " + editTextNumber);
+                runLast.addBreak();
+                runLast.setText("Rede: " + spinnerNetwork);
+                runLast.addBreak();
+                runLast.setText("Instalação de Equipamento: " + editTextEquipmentInstalation);
+                runLast.addBreak();
+                runLast.setText("Instalação de Antena: " + editTextAntennaInstalation);
+                runLast.addBreak();
+                runLast.setText("Conexão: " + editTextConnection);
+                runLast.addBreak();
+                runLast.setText("Observação: " + editTextObservation);
+                runLast.addBreak();
+                runLast.setText(String.format("Latitude: %.6f", latitude));
+                runLast.addBreak();
+                runLast.setText(String.format("Longitude: %.6f", longitude));
+                runLast.addBreak();
+            }else{
+                runLast.setText("Figura " + editTextNumber + " - Visada " + spinnerNetwork + " do " + editTextId + " " + editTextNumber);
+                runLast.addBreak();
+            }
 
             FileOutputStream fos = new FileOutputStream(tutuDocDir + FILENAMES[0]);
             document.write(fos);
@@ -252,7 +314,7 @@ public class MyManager {
             String lastLine = lines[lines.length - 1];
 
             if(lastLine.contains("4. Site Survey")){
-
+                nextAppendType = "Very First Image";
             }
 
         } catch (Exception e) { e.printStackTrace(); }
@@ -277,52 +339,108 @@ public class MyManager {
         int w = source.getWidth();
         int h = source.getHeight();
         Bitmap result = Bitmap.createBitmap(w, h, source.getConfig());
+
+        //Draw picture
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(source, 0, 0, null);
-        Paint paint = new Paint();
 
-        //Define position
-        int rectLeft = 1;
-        int rectTop = h-(h/4);
-        int rectRight = w/3;
-        int rectBottom = h-1;
+        File visada = null;
+        visada = new File(tutuDocDir, "visada.jpg");
 
-        Rect r = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+        if(!myPole) {
 
-        //Draw white rect
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-        canvas.drawRect(r, paint);
+            int wCardinal = 0;
+            int hCardinal = 0;
 
-        int xCenter = r.centerX();
-        int yCenter = r.centerY();
+            if(visada.exists()) {
+                //Draw cardinal points
+                String visadaPath = visada.getPath();
+                Bitmap firstbm = BitmapFactory.decodeFile(visadaPath);
+                wCardinal = firstbm.getWidth();
+                hCardinal = firstbm.getHeight();
+                canvas.drawBitmap(firstbm, 0, h - hCardinal, null);
+            }
+            Paint paint = new Paint();
 
-        //Draw black edge
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-        canvas.drawRect(r, paint);
+            //Text settings
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(color);
 
-        //Text settings
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(color);
+            //Opacity(0~255)
+            paint.setAlpha(alpha);
 
-        //Opacity(0~255)
-        paint.setAlpha(alpha);
+            paint.setTextSize(w / 24);
+            paint.setAntiAlias(true);
+            paint.setUnderlineText(underline);
+            paint.setTextAlign(Paint.Align.CENTER);
 
-        paint.setTextSize(w/24);
-        paint.setAntiAlias(true);
-        paint.setUnderlineText(underline);
-        paint.setTextAlign(Paint.Align.CENTER);
+            //Id and Number drawings
+//            canvas.drawText(txtId, rectRight / 2, yCenter - (h - yCenter) / 3, paint);
+            canvas.drawText(txtId.charAt(0)+txtNumber, wCardinal*0.75f, h-(hCardinal*0.20f), paint);
 
-        //Id and Number drawings
-        canvas.drawText(txtId, rectRight/2, yCenter-(h-yCenter)/3, paint);
-        canvas.drawText(txtNumber, rectRight/2, yCenter, paint);
+            return result;
+        }else{
+            Paint paint = new Paint();
 
-        return result;
+            //Define position
+            int rectLeft = 1;
+            int rectTop = h - (h / 4);
+            int rectRight = w / 3;
+            int rectBottom = h - 1;
+
+            Rect r = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+
+            //Draw white rect
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.WHITE);
+            canvas.drawRect(r, paint);
+
+            int xCenter = r.centerX();
+            int yCenter = r.centerY();
+
+            //Draw black edge
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(r, paint);
+
+            //Text settings
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(color);
+
+            //Opacity(0~255)
+            paint.setAlpha(alpha);
+
+            paint.setTextSize(w / 24);
+            paint.setAntiAlias(true);
+            paint.setUnderlineText(underline);
+            paint.setTextAlign(Paint.Align.CENTER);
+
+            //Id and Number drawings
+            canvas.drawText(txtId, rectRight / 2, yCenter - (h - yCenter) / 3, paint);
+            canvas.drawText(txtNumber, rectRight / 2, yCenter, paint);
+
+            return result;
+        }
     }
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+

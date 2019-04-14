@@ -17,11 +17,11 @@
             android:id="@+id/textViewPressing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/buttonStartInput"
+            android:layout_below="@id/buttonStartDirection"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="40dp"
-            android:text="Press BEGIN to start the application. You'll be requested to take 5 photos.\n\nThe first one, will usually be the Street Pole one.\n\nThe other 4, the main cardinal directions(North, South, East, West)."
+            android:text="Pressione a opção desejada, para iniciar a aplicação.\n\nÉ recomendável que a primeira foto seja a do POSTE e, em seguida, as 4 principais visadas(Norte, Sul, Leste, Oeste)."
             android:textAlignment="center"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -35,7 +35,20 @@
             android:layout_marginTop="40dp"
             android:textSize="25dp"
             android:layout_centerHorizontal="true"
-            android:text="Begin" />
+            android:text="Novo Poste" />
+
+        <Button
+            android:id="@+id/buttonStartDirection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#008577"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/buttonStartInput"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:textSize="25dp"
+            android:layout_centerHorizontal="true"
+            android:text="Nova Visada" />
 
     </RelativeLayout>
 </ScrollView>

@@ -51,18 +51,28 @@ public class MyManager {
     int otherImgH = 236;
     int otherImgW = 312;
 
-    int firstImgNum;
+    int imgNum;
 
     float latitude, longitude;
 
     String id, number, network, equipmentInstalation, antennaInstalation, connection, observation, firstImgName;
+    String firstImageName, firstImageNameOriginal;
 
-    public boolean wordEmpty;
-    Toast toast;
+    File image = null;
     File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+    File DCIMDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     String tutuDocDir = docDir.getAbsolutePath() + "/Tutu/";
+    String tutuDCIMDir = DCIMDir.getAbsolutePath() + "/Tutu/";
     String dateString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-    String firstImageName = "TUTU_" + dateString + ".jpg";
+
+    public String getFirstImageName() {
+        dateString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        firstImageName = "TUTU_" + dateString + ".jpg";
+        firstImageNameOriginal = "TUTU_O_" + dateString + ".jpg";
+        return firstImageName;
+    }
+
+    String pathFirstImage = tutuDocDir + firstImageName;
 
     String[] FILENAMES = {
             "Site Survey.docx",
@@ -128,68 +138,18 @@ public class MyManager {
                         XWPFDocument document = new XWPFDocument();
                         XWPFParagraph paragraph = document.createParagraph();
                         XWPFRun run = paragraph.createRun();
-//                        run.setText("The List:");
-
-//                        String cTAbstractNumBulletXML =
-//                                "<w:abstractNum xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" w:abstractNumId=\"0\">"
-//                              + "<w:multiLevelType w:val=\"hybridMultilevel\"/>"
-//                              + "<w:lvl w:ilvl=\"0\"><w:start w:val=\"1\"/><w:numFmt w:val=\"bullet\"/><w:lvlText w:val=\"\"/><w:lvlJc w:val=\"left\"/><w:pPr><w:ind w:left=\"720\" w:hanging=\"360\"/></w:pPr><w:rPr><w:rFonts w:ascii=\"Symbol\" w:hAnsi=\"Symbol\" w:hint=\"default\"/></w:rPr></w:lvl>"
-//                              + "<w:lvl w:ilvl=\"1\" w:tentative=\"1\"><w:start w:val=\"1\"/><w:numFmt w:val=\"bullet\"/><w:lvlText w:val=\"o\"/><w:lvlJc w:val=\"left\"/><w:pPr><w:ind w:left=\"1440\" w:hanging=\"360\"/></w:pPr><w:rPr><w:rFonts w:ascii=\"Courier New\" w:hAnsi=\"Courier New\" w:cs=\"Courier New\" w:hint=\"default\"/></w:rPr></w:lvl>"
-//                              + "<w:lvl w:ilvl=\"2\" w:tentative=\"1\"><w:start w:val=\"1\"/><w:numFmt w:val=\"bullet\"/><w:lvlText w:val=\"\"/><w:lvlJc w:val=\"left\"/><w:pPr><w:ind w:left=\"2160\" w:hanging=\"360\"/></w:pPr><w:rPr><w:rFonts w:ascii=\"Wingdings\" w:hAnsi=\"Wingdings\" w:hint=\"default\"/></w:rPr></w:lvl>"
-//                              + "</w:abstractNum>";
-
-                        //                            CTNumbering cTNumbering = CTNumbering.Factory.parse(cTAbstractNumBulletXML);
-//                            CTAbstractNum cTAbstractNum = cTNumbering.getAbstractNumArray(0);
-//                            XWPFAbstractNum abstractNum = new XWPFAbstractNum(cTAbstractNum);
-//                            XWPFNumbering numbering = document.createNumbering();
-//                            BigInteger abstractNumID = numbering.addAbstractNum(abstractNum);
-//                            BigInteger numID = numbering.addNum(abstractNumID);
 
                         paragraph = document.createParagraph();
                         paragraph.setAlignment(ParagraphAlignment.LEFT);
-//                            paragraph.setNumID(numID);
                         run = paragraph.createRun();
                         run.setBold(true);
                         run.setFontFamily("Trebuchet MS");
                         run.setFontSize(11);
                         run.setText("4. Site Survey");
-                        run.addBreak();
-                        run.addBreak();
-                        run.setText("   4.1. Concentradores");
-                        run.addBreak();
-                        run.addBreak();
-                        run.setText("      4.1.1. Concentrador 1");
-                        run.addBreak();
-                        run.addBreak();
-                        run.addBreak();
-                        //First Image
-
-//                        FileInputStream image_fis = new FileInputStream(tutuDocDir + "tututest.jpg");
-//
-//                        paragraphImg.setAlignment(ParagraphAlignment.CENTER);
-//                        try {
-//                            runImg.addPicture(image_fis, XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(210), Units.toEMU(304)); // 200x200 pixels
-//                        } catch (InvalidFormatException e) {
-//                            e.printStackTrace();
-//                        }
-//                        image_fis.close();
-
-
-//                        paragraph = document.createParagraph();
-//                            paragraph.setNumID(numID);
-//                            paragraph.getCTP().getPPr().getNumPr().addNewIlvl().setVal(BigInteger.valueOf(1));
-//                            run.setText("Sub list item " + " a");
-//                        paragraph.setSpacingAfter(0);
-
-//                        paragraph = document.createParagraph();
-//                        run = paragraph.createRun();
-//                        run.setText("Paragraph after the list.");
 
                         FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[0]));
                         document.write(fileOut);
                         fileOut.close();
-
-                        wordEmpty = true;
 
                     }
                     else if(filename == FILENAMES[1]){
@@ -252,7 +212,10 @@ public class MyManager {
             XWPFParagraph paragraphLast =  paragraphs.get(paragraphs.size() - 1);
             XWPFRun runLast = paragraphLast.createRun();
             runLast.addBreak();
-            runLast.setText("Figura " + firstImgNum + " - Poste do " + id + " " + number);
+            runLast.setItalic(true);
+            runLast.setFontFamily("Trebuchet MS");
+            runLast.setFontSize(11);
+            runLast.setText("Figura " + imgNum + " - Poste do " + id + " " + number);
 
             FileOutputStream fos = new FileOutputStream(tutuDocDir + FILENAMES[0]);
             document.write(fos);
@@ -264,21 +227,28 @@ public class MyManager {
     //Read .docx file. Return last line's number.
     public void readDocx(){
 
+        //Fixes Apache POI error
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
 
+        try {
 
+            FileInputStream fis = new FileInputStream(tutuDocDir + FILENAMES[0]);
+            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
+            XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
 
+            String docString = extractor.getText();
+            String[] lines = docString.split("\n");
+            String lastLine = lines[lines.length - 1];
 
+            if(lastLine.contains("4. Site Survey")){
+
+            }
+
+        } catch (Exception e) { e.printStackTrace(); }
 
     }
-
-
-
-
-
-
-
-
-
 
 
 

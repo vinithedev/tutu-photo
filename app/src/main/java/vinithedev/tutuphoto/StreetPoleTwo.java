@@ -43,19 +43,23 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class StreetPoleTwo extends AppCompatActivity {
 
+    ///////////////////////
+    File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+    String tutuDocDir = docDir.getAbsolutePath() + "/Tutu/";
+    String dateString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    String firstImageName = "TUTU_" + dateString + ".jpg";
+    String firstImageNameOriginal = "TUTU_O_" + dateString + ".jpg";
+    //////////////////////
+
     MyManager mm = new MyManager(this);
+
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
     Context context = StreetPoleTwo.this;
+
     String pathToFile, fileName, dirString, dirStringOriginal;
     File image, imageOriginal, DCIMDir = null;
     File docPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-
-//    File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-//    String tutuDocDir = docDir.getAbsolutePath() + "/Tutu/";
-//
-//
-    Toast toast;
 
     static final int REQUEST_PERMISSIONS = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -72,21 +76,6 @@ public class StreetPoleTwo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_street_pole_two);
         setTitle(R.string.street_pole_two);
-
-        //Fixes Apache POI error
-        System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
-        System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
-        System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
-
-        //Handle permissions
-        //
-        //Beginning with Android 6.0 (API level 23), users can revoke permissions from any app at any time,
-        //even if the app targets a lower API level. So even if the app used the camera yesterday,
-        //it can't assume it still has that permission today.
-
-//        if(!hasPermissions(this, PERMISSIONS)){
-//            ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSIONS);
-//        }
 
         //Button NEXT(Start Camera)
         buttonNext = findViewById(R.id.buttonNext);
@@ -153,153 +142,11 @@ public class StreetPoleTwo extends AppCompatActivity {
                 editTextConnection.setText("");
                 editTextObservation.setText("");
                 spinner.setSelection(adapter.getCount());
-
-//                toast = toast.makeText(context, "eae men", Toast.LENGTH_SHORT);
-//                toast.show();
-
-//                eae();
-//                Log.v("MyTAG", directory.getAbsolutePath());
-//                    createDocx(directory, "oi");
-
-//                Workbook wb = new HSSFWorkbook();
-//                Cell c = null;
-//                CellStyle cs = wb.createCellStyle();
-//                cs.setFillForegroundColor(HSSFColor.LIME.index);
-//                cs.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-//                Sheet sheet1 = null;
-//                sheet1 = wb.createSheet("myOrder");
-//                Row row = sheet1.createRow(0);
-//                c = row.createCell(0);
-//                c.setCellValue("Item Number");
-//                c.setCellStyle(cs);
-//                c = row.createCell(1);
-//                c.setCellValue("Quantity");
-//                c.setCellStyle(cs);
-//                c = row.createCell(2);
-//                c.setCellValue("Price");
-//                c.setCellStyle(cs);
-//                sheet1.setColumnWidth(0, (15 * 500));
-//                sheet1.setColumnWidth(1, (15 * 500));
-//                sheet1.setColumnWidth(2, (15 * 500));
-
-
-
-
-
-
-//                    try{
-//                        // Creating Input Stream
-//                        File file = new File(mm.tutuDocDir, mm.FILENAMES[1]);
-//                        FileInputStream myInput = new FileInputStream(file);
-//
-//                        // Create a POIFSFileSystem object
-//                        POIFSFileSystem myFileSystem = new POIFSFileSystem(myInput);
-//
-//                        // Create a workbook using the File System
-//                        HSSFWorkbook myWorkBook = new HSSFWorkbook(myFileSystem);
-//
-//                        // Get the first sheet from workbook
-//                        HSSFSheet mySheet = myWorkBook.getSheetAt(0);
-//
-//                        /** We now need something to iterate through the cells.**/
-//                        Iterator rowIter = mySheet.rowIterator();
-//
-//                        while(rowIter.hasNext()){
-//                            HSSFRow myRow = (HSSFRow) rowIter.next();
-//                            Iterator cellIter = myRow.cellIterator();
-//                            while(cellIter.hasNext()){
-//                                HSSFCell myCell = (HSSFCell) cellIter.next();
-//                                Log.v("MyTAG", "Cell Value: " +  myCell.toString());
-//                                Toast.makeText(context, "cell Value: " + myCell.toString(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }catch (Exception e){e.printStackTrace(); }
-
-
-
-
-//
-//                try {
-
-//                    FileInputStream file = new FileInputStream(new File(mm.tutuDocDir, mm.FILENAMES[1]));
-
-
-
-//opa();
-
-//                try
-//                {
-//                    FileInputStream inp = new FileInputStream(new File(mm.tutuDocDir, mm.FILENAMES[3]));
-//                    Workbook wb = WorkbookFactory.create(inp);
-//                    Sheet sheet = wb.getSheetAt(0);
-//                    int num = sheet.getLastRowNum();
-//                    Row row = sheet.createRow(++num);
-//                    row.createCell(0).setCellValue("xyz");
-//                    FileOutputStream fileOut = new FileOutputStream(new File(mm.tutuDocDir, mm.FILENAMES[3]));
-//                    wb.write(fileOut);
-//                    fileOut.close();
-//                }
-//                catch(Exception e)
-//                {
-//                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
         });
     }
 
-    //Is called after startActivityForResult
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_IMAGE_CAPTURE){
-
-            //Copy the picture before drawing, so that we can have a backup
-            try {
-                copy(image, imageOriginal);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //Scan image so that it shows on gallery
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(image)));
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageOriginal)));
-
-            //Write text on picture
-            String filePath = image.getPath();
-            Bitmap firstbm = BitmapFactory.decodeFile(filePath);
-
-            Bitmap bmp = addTextToImage(firstbm, editTextId.getText().toString(), editTextNumber.getText().toString(), Color.BLACK, 255, false);
-            File f = new File(DCIMDir.getPath() + File.separator + "/Tutu/" + "TUTU_" + fileName + ".jpg");
-
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(f);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        }
-    }
-
+    //Called when user requests to take picture
     private void dispatchPictureTakerAction() {
 
         //An intent is an abstract description of an operation to be performed.
@@ -322,6 +169,53 @@ public class StreetPoleTwo extends AppCompatActivity {
         }
     }
 
+    //Creates picture file
+    private File createPhotoFile() {
+
+        //Couldn't save image outside of DCIM
+        image = new File(mm.tutuDCIMDir + mm.getFirstImageName());
+
+        //Initializes copy file
+        imageOriginal = new File(mm.tutuDCIMDir + mm.firstImageNameOriginal);
+
+        //Return only the first image. The copy will be created later.
+        return image;
+    }
+
+    //Is called after startActivityForResult
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == mm.REQUEST_IMAGE_CAPTURE){
+
+            //Copy the picture before drawing, so that we can have a backup
+            try {
+                copy(image, imageOriginal);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Scan image so that it shows on gallery
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(image)));
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageOriginal)));
+
+            //Write text on picture
+            String filePath = image.getPath();
+            Bitmap firstbm = BitmapFactory.decodeFile(filePath);
+
+            Bitmap bmp = addTextToImage(firstbm, editTextId.getText().toString(), editTextNumber.getText().toString(), Color.BLACK, 255, false);
+            File f = new File(mm.DCIMDir.getPath() + File.separator + "/Tutu/" + mm.firstImageName);
+
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        }
+    }
+
+    //Add rect and text to picture
     public Bitmap addTextToImage(Bitmap source, String txtId, String txtNumber, int color, int alpha, boolean underline) {
 
         //Define dimensions
@@ -372,36 +266,6 @@ public class StreetPoleTwo extends AppCompatActivity {
         return result;
     }
 
-    private File createPhotoFile() {
-
-        //File name format
-        fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        //Declares storage's directory
-        DCIMDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        dirString = DCIMDir.getAbsolutePath() + "/Tutu/";
-
-        //If folder and/or subfolder doesn't exists, create it
-        File directory = new File(dirString);
-        if (! directory.exists()){
-            directory.mkdirs();
-        }
-
-        //Set final file directory and name, create it and return.
-        dirString = DCIMDir.getAbsolutePath() + "/Tutu/" + "TUTU_" + fileName + ".jpg";
-
-        //Copy file path, but with slightly different name
-        dirStringOriginal = DCIMDir.getAbsolutePath() + "/Tutu/" + "TUTU_O_" + fileName + ".jpg";;
-
-        image = new File(dirString);
-
-        //Initializes copy file
-        imageOriginal = new File(dirStringOriginal);
-
-        //Return only the first image. The copy will be created later.
-        return image;
-    }
-
     //Copies a file
     public void copy(File src, File dst) throws IOException {
         FileInputStream inStream = new FileInputStream(src);
@@ -413,43 +277,5 @@ public class StreetPoleTwo extends AppCompatActivity {
         outStream.close();
     }
 
-//    //Checks multiple permissions
-//    public static boolean hasPermissions(Context context, String... permissions) {
-//        if (context != null && permissions != null) {
-//            for (String permission : permissions) {
-//                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return true;
-//    }
-
-//    public void eae(){
-//
-//        createDocx(docPath, "file has been saved");
-//
-//        Log.v("MyTAG", docPath.getAbsolutePath());
-//
-////        toast = toast.makeText(context, "Saved at: " + docPath.getAbsolutePath(), Toast.LENGTH_SHORT);
-////        toast.show();
-//    }
-
-    private void createDocx(File path, String message){
-        try {
-            XWPFDocument document = new XWPFDocument();
-
-            FileOutputStream outputStream = new FileOutputStream(new File(path, "/poi.docx"));
-
-            XWPFParagraph paragraph = document.createParagraph();
-            XWPFRun run = paragraph.createRun();
-            run.setText(message);
-
-            document.write(outputStream);
-            outputStream.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
 }

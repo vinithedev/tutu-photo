@@ -2,7 +2,6 @@ package vinithedev.tutuphoto;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,10 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,11 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,36 +31,12 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.os.Environment.getExternalStoragePublicDirectory;
-
 public class StreetPoleTwo extends AppCompatActivity {
-
-    ///////////////////////
-    File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-    String tutuDocDir = docDir.getAbsolutePath() + "/Tutu/";
-    String dateString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-    String firstImageName = "TUTU_" + dateString + ".jpg";
-    String firstImageNameOriginal = "TUTU_O_" + dateString + ".jpg";
-    //////////////////////
 
     MyManager mm = new MyManager(this);
 
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
-    Context context = StreetPoleTwo.this;
-
-    String pathToFile, fileName, dirString, dirStringOriginal;
-    File image, imageOriginal, DCIMDir = null;
-    File docPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-
-    static final int REQUEST_PERMISSIONS = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 2;
-
-    String[] PERMISSIONS = {
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.CAMERA
-    };
 
     //Called when the activity is starting. This is where most initialization should go.
     @Override
@@ -158,13 +126,13 @@ public class StreetPoleTwo extends AppCompatActivity {
             photoFile = createPhotoFile();
 
             if (photoFile != null) {
-                pathToFile = photoFile.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(context, "vinithedev.tutuphoto", photoFile);
+                mm.pathToFile = photoFile.getAbsolutePath();
+                Uri photoURI = FileProvider.getUriForFile(mm.context, "vinithedev.tutuphoto", photoFile);
                 takePic.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
                 //Launch an activity for which you would like a result when it finished.
                 //When this activity exits, your onActivityResult() method will be called with the given requestCode.
-                startActivityForResult(takePic, REQUEST_IMAGE_CAPTURE);
+                startActivityForResult(takePic, mm.REQUEST_IMAGE_CAPTURE);
             }
         }
     }
@@ -173,13 +141,13 @@ public class StreetPoleTwo extends AppCompatActivity {
     private File createPhotoFile() {
 
         //Couldn't save image outside of DCIM
-        image = new File(mm.tutuDCIMDir + mm.getFirstImageName());
+        mm.imageFile = new File(mm.tutuDCIMDir + mm.getFirstImageName());
 
         //Initializes copy file
-        imageOriginal = new File(mm.tutuDCIMDir + mm.firstImageNameOriginal);
+        mm.imageFileOriginal = new File(mm.tutuDCIMDir + mm.firstImageNameOriginal);
 
         //Return only the first image. The copy will be created later.
-        return image;
+        return mm.imageFile;
     }
 
     //Is called after startActivityForResult
@@ -189,20 +157,20 @@ public class StreetPoleTwo extends AppCompatActivity {
 
             //Copy the picture before drawing, so that we can have a backup
             try {
-                copy(image, imageOriginal);
+                mm.copy(mm.imageFile, mm.imageFileOriginal);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             //Scan image so that it shows on gallery
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(image)));
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageOriginal)));
+            mm.context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mm.imageFile)));
+            mm.context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mm.imageFileOriginal)));
 
             //Write text on picture
-            String filePath = image.getPath();
+            String filePath = mm.imageFile.getPath();
             Bitmap firstbm = BitmapFactory.decodeFile(filePath);
 
-            Bitmap bmp = addTextToImage(firstbm, editTextId.getText().toString(), editTextNumber.getText().toString(), Color.BLACK, 255, false);
+            Bitmap bmp = mm.addTextToImage(firstbm, editTextId.getText().toString(), editTextNumber.getText().toString(), Color.BLACK, 255, false);
             File f = new File(mm.DCIMDir.getPath() + File.separator + "/Tutu/" + mm.firstImageName);
 
             FileOutputStream fos = null;
@@ -215,67 +183,9 @@ public class StreetPoleTwo extends AppCompatActivity {
         }
     }
 
-    //Add rect and text to picture
-    public Bitmap addTextToImage(Bitmap source, String txtId, String txtNumber, int color, int alpha, boolean underline) {
 
-        //Define dimensions
-        int w = source.getWidth();
-        int h = source.getHeight();
-        Bitmap result = Bitmap.createBitmap(w, h, source.getConfig());
-        Canvas canvas = new Canvas(result);
-        canvas.drawBitmap(source, 0, 0, null);
-        Paint paint = new Paint();
 
-        //Define position
-        int rectLeft = 1;
-        int rectTop = h-(h/4);
-        int rectRight = w/3;
-        int rectBottom = h-1;
 
-        Rect r = new Rect(rectLeft, rectTop, rectRight, rectBottom);
-
-        //Draw white rect
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-        canvas.drawRect(r, paint);
-
-        int xCenter = r.centerX();
-        int yCenter = r.centerY();
-
-        //Draw black edge
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-        canvas.drawRect(r, paint);
-
-        //Text settings
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(color);
-
-        //Opacity(0~255)
-        paint.setAlpha(alpha);
-
-        paint.setTextSize(w/24);
-        paint.setAntiAlias(true);
-        paint.setUnderlineText(underline);
-        paint.setTextAlign(Paint.Align.CENTER);
-
-        //Id and Number drawings
-        canvas.drawText(txtId, rectRight/2, yCenter-(h-yCenter)/3, paint);
-        canvas.drawText(txtNumber, rectRight/2, yCenter, paint);
-
-        return result;
-    }
-
-    //Copies a file
-    public void copy(File src, File dst) throws IOException {
-        FileInputStream inStream = new FileInputStream(src);
-        FileOutputStream outStream = new FileOutputStream(dst);
-        FileChannel inChannel = inStream.getChannel();
-        FileChannel outChannel = outStream.getChannel();
-        inChannel.transferTo(0, inChannel.size(), outChannel);
-        inStream.close();
-        outStream.close();
-    }
 
 
 }

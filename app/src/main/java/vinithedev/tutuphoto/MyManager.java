@@ -4,6 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -38,6 +43,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,9 +62,9 @@ public class MyManager {
     float latitude, longitude;
 
     String id, number, network, equipmentInstalation, antennaInstalation, connection, observation, firstImgName;
-    String firstImageName, firstImageNameOriginal;
+    String firstImageName, firstImageNameOriginal, pathToFile;
+    File imageFile, imageFileOriginal = null;
 
-    File image = null;
     File docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
     File DCIMDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     String tutuDocDir = docDir.getAbsolutePath() + "/Tutu/";
@@ -71,8 +77,6 @@ public class MyManager {
         firstImageNameOriginal = "TUTU_O_" + dateString + ".jpg";
         return firstImageName;
     }
-
-    String pathFirstImage = tutuDocDir + firstImageName;
 
     String[] FILENAMES = {
             "Site Survey.docx",
@@ -99,11 +103,16 @@ public class MyManager {
     //If folder and/or subfolder doesn't exists, create it
     public void checkDir() {
 
-        File directory = new File(tutuDocDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-
+        File docDirectory = new File(tutuDocDir);
+        if (!docDirectory.exists()) {
+            docDirectory.mkdirs();
         }
+
+        File DCIMDirectory = new File(tutuDCIMDir);
+        if (!DCIMDirectory.exists()) {
+            DCIMDirectory.mkdirs();
+        }
+
     }
 
     //Handle multiple permissions
@@ -250,9 +259,67 @@ public class MyManager {
 
     }
 
+    //Copies a file
+    public void copy(File src, File dst) throws IOException {
+        FileInputStream inStream = new FileInputStream(src);
+        FileOutputStream outStream = new FileOutputStream(dst);
+        FileChannel inChannel = inStream.getChannel();
+        FileChannel outChannel = outStream.getChannel();
+        inChannel.transferTo(0, inChannel.size(), outChannel);
+        inStream.close();
+        outStream.close();
+    }
 
+    //Add rect and text to picture
+    public Bitmap addTextToImage(Bitmap source, String txtId, String txtNumber, int color, int alpha, boolean underline) {
 
+        //Define dimensions
+        int w = source.getWidth();
+        int h = source.getHeight();
+        Bitmap result = Bitmap.createBitmap(w, h, source.getConfig());
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(source, 0, 0, null);
+        Paint paint = new Paint();
 
+        //Define position
+        int rectLeft = 1;
+        int rectTop = h-(h/4);
+        int rectRight = w/3;
+        int rectBottom = h-1;
+
+        Rect r = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+
+        //Draw white rect
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(r, paint);
+
+        int xCenter = r.centerX();
+        int yCenter = r.centerY();
+
+        //Draw black edge
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.BLACK);
+        canvas.drawRect(r, paint);
+
+        //Text settings
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(color);
+
+        //Opacity(0~255)
+        paint.setAlpha(alpha);
+
+        paint.setTextSize(w/24);
+        paint.setAntiAlias(true);
+        paint.setUnderlineText(underline);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        //Id and Number drawings
+        canvas.drawText(txtId, rectRight/2, yCenter-(h-yCenter)/3, paint);
+        canvas.drawText(txtNumber, rectRight/2, yCenter, paint);
+
+        return result;
+    }
 
 
 

@@ -203,8 +203,12 @@ public class StreetPoleTwo extends AppCompatActivity {
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        mm.longitude = location.getLongitude();
-        mm.latitude = location.getLatitude();
+
+        mm.dbLongitude = location.getLongitude();
+        mm.dbLatitude = location.getLatitude();
+
+        mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.",",");
+        mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.",",");
 
         if(requestCode == mm.REQUEST_IMAGE_CAPTURE){
 

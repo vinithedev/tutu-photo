@@ -13,10 +13,8 @@ import android.graphics.Rect;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
@@ -54,7 +52,8 @@ public class MyManager {
 
     public boolean myPole = true;
 
-    double latitude, longitude;
+    double dbLatitude, dbLongitude;
+    String sLatitude, sLongitude;
 
     // null, "First Image" , "Other Image" or "Very First Image"
     String nextAppendType;
@@ -278,9 +277,9 @@ public class MyManager {
                 runLast.addBreak();
                 runLast.setText("Observação: " + editTextObservation);
                 runLast.addBreak();
-                runLast.setText(String.format("Latitude: %.6f", latitude));
+                runLast.setText(String.format("Latitude: " + sLatitude));
                 runLast.addBreak();
-                runLast.setText(String.format("Longitude: %.6f", longitude));
+                runLast.setText(String.format("Longitude: " + sLongitude));
                 runLast.addBreak();
             }else{
                 runLast.setText("Figura " + editTextNumber + " - Visada " + spinnerNetwork + " do " + editTextId + " " + editTextNumber);

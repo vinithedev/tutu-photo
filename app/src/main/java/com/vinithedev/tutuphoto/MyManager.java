@@ -1,4 +1,4 @@
-package vinithedev.tutuphoto;
+package com.vinithedev.tutuphoto;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.location.LocationManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 

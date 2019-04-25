@@ -1,4 +1,4 @@
-package vinithedev.tutuphoto;
+package com.vinithedev.tutuphoto;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

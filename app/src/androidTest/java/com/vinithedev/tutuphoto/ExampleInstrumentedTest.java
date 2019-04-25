@@ -1,4 +1,4 @@
-package vinithedev.tutuphoto;
+package com.vinithedev.tutuphoto;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("vinithedev.tutuphoto", appContext.getPackageName());
+        assertEquals("com.vinithedev.tutuphoto", appContext.getPackageName());
     }
 }

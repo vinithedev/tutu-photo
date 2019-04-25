@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "vinithedev.tutuphoto"
+        applicationId "com.vinithedev.tutuphoto"
         multiDexEnabled true
         minSdkVersion 26
         targetSdkVersion 28

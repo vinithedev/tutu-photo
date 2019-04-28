@@ -1,4 +1,4 @@
-package vinithedev.tutuphoto;
+package com.vinithedev.tutuphoto;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -173,7 +172,7 @@ public class StreetPoleTwo extends AppCompatActivity {
 
             if (photoFile != null) {
                 mm.pathToFile = photoFile.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(mm.context, "vinithedev.tutuphoto", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(mm.context, "com.vinithedev.tutuphoto", photoFile);
                 takePic.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
                 //Launch an activity for which you would like a result when it finished.
@@ -204,8 +203,12 @@ public class StreetPoleTwo extends AppCompatActivity {
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        mm.longitude = location.getLongitude();
-        mm.latitude = location.getLatitude();
+
+        mm.dbLongitude = location.getLongitude();
+        mm.dbLatitude = location.getLatitude();
+
+        mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.",",");
+        mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.",",");
 
         if(requestCode == mm.REQUEST_IMAGE_CAPTURE){
 

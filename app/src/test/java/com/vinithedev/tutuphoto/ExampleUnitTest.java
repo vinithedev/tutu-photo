@@ -1,4 +1,4 @@
-package vinithedev.tutuphoto;
+package com.vinithedev.tutuphoto;
 
 import org.junit.Test;
 

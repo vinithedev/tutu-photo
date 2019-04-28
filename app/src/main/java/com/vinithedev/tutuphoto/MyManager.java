@@ -1,4 +1,4 @@
-package vinithedev.tutuphoto;
+package com.vinithedev.tutuphoto;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,14 +10,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.location.LocationManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
@@ -55,7 +52,8 @@ public class MyManager {
 
     public boolean myPole = true;
 
-    double latitude, longitude;
+    double dbLatitude, dbLongitude;
+    String sLatitude, sLongitude;
 
     // null, "First Image" , "Other Image" or "Very First Image"
     String nextAppendType;
@@ -164,28 +162,28 @@ public class MyManager {
                         fileOut.close();
 
                     }
-                    else if(filename == FILENAMES[1]){
-                        Workbook workbook = new HSSFWorkbook();
-                        workbook.createSheet("Concentradores");
-                        FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[1]));
-                        workbook.write(fileOut);
-                        fileOut.close();
-                    }
-                    else if(filename == FILENAMES[2]){
-                        Workbook workbook = new HSSFWorkbook();
-                        workbook.createSheet("Repetidores");
-                        FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[2]));
-                        workbook.write(fileOut);
-                        fileOut.close();
-                    }
-                    else if(filename == FILENAMES[3]){
-                        Workbook workbook = new HSSFWorkbook();
-                        workbook.createSheet("Concentrador");
-                        workbook.createSheet("Repetidor");
-                        FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[3]));
-                        workbook.write(fileOut);
-                        fileOut.close();
-                    }
+//                    else if(filename == FILENAMES[1]){
+//                        Workbook workbook = new HSSFWorkbook();
+//                        workbook.createSheet("Concentradores");
+//                        FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[1]));
+//                        workbook.write(fileOut);
+//                        fileOut.close();
+//                    }
+//                    else if(filename == FILENAMES[2]){
+//                        Workbook workbook = new HSSFWorkbook();
+//                        workbook.createSheet("Repetidores");
+//                        FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[2]));
+//                        workbook.write(fileOut);
+//                        fileOut.close();
+//                    }
+//                    else if(filename == FILENAMES[3]){
+//                        Workbook workbook = new HSSFWorkbook();
+//                        workbook.createSheet("Concentrador");
+//                        workbook.createSheet("Repetidor");
+//                        FileOutputStream fileOut = new FileOutputStream(new File(tutuDocDir, FILENAMES[3]));
+//                        workbook.write(fileOut);
+//                        fileOut.close();
+//                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -279,9 +277,9 @@ public class MyManager {
                 runLast.addBreak();
                 runLast.setText("Observação: " + editTextObservation);
                 runLast.addBreak();
-                runLast.setText(String.format("Latitude: %.6f", latitude));
+                runLast.setText(String.format("Latitude: " + sLatitude));
                 runLast.addBreak();
-                runLast.setText(String.format("Longitude: %.6f", longitude));
+                runLast.setText(String.format("Longitude: " + sLongitude));
                 runLast.addBreak();
             }else{
                 runLast.setText("Figura " + editTextNumber + " - Visada " + spinnerNetwork + " do " + editTextId + " " + editTextNumber);

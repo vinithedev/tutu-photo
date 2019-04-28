@@ -217,14 +217,7 @@ public class StreetPoleTwo extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        mm.dbLongitude = location.getLongitude();
-        mm.dbLatitude = location.getLatitude();
-
-        mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.",",");
-        mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.",",");
+        setLatLong();
 
         if (requestCode == mm.REQUEST_IMAGE_CAPTURE) {
 
@@ -259,18 +252,34 @@ public class StreetPoleTwo extends AppCompatActivity {
 
     public void setLatLong() {
 
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            mm.hasPermissions();
+            return;
+        }
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        mm.dbLongitude = location.getLongitude();
-        mm.dbLatitude = location.getLatitude();
+        if(location!=null) {
 
-        mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.",",");
-        mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.",",");
+            mm.dbLongitude = location.getLongitude();
+            mm.dbLatitude = location.getLatitude();
 
-        textViewLatitude.setText("Latitude: " + mm.sLatitude);
-        textViewLongitude.setText("Longitude: " + mm.sLongitude);
+            mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.", ",");
+            mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.", ",");
+
+            textViewLatitude.setText("Latitude: " + mm.sLatitude);
+            textViewLongitude.setText("Longitude: " + mm.sLongitude);
+
+        }
+
+        }
 
     }
 
-}

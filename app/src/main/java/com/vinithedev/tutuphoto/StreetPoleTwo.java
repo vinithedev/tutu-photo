@@ -1,15 +1,20 @@
 package com.vinithedev.tutuphoto;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,9 +37,9 @@ public class StreetPoleTwo extends AppCompatActivity {
 
     Button buttonClean, buttonNext;
     EditText editTextId, editTextNumber, editTextEquipmentInstalation, editTextAntennaInstalation, editTextConnection, editTextObservation;
-    ImageView imageViewId, imageViewNumber, imageViewNetwork,imageViewEquipmentInstalation, imageViewAntennaInstalation, imageViewConnection, imageViewObservation;
+    ImageView imageViewId, imageViewNumber, imageViewNetwork, imageViewEquipmentInstalation, imageViewAntennaInstalation, imageViewConnection, imageViewObservation, imageViewLatitude, imageViewLongitude;
     Spinner spinner;
-//    LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    TextView textViewLatitude, textViewLongitude;
 
     //Called when the activity is starting. This is where most initialization should go.
     @Override
@@ -50,6 +55,8 @@ public class StreetPoleTwo extends AppCompatActivity {
         editTextAntennaInstalation = (EditText) findViewById(R.id.editTextAntennaInstalation);
         editTextConnection = (EditText) findViewById(R.id.editTextConnection);
         editTextObservation = (EditText) findViewById(R.id.editTextObservation);
+        textViewLatitude = (TextView) findViewById(R.id.textViewLatitude);
+        textViewLongitude = (TextView) findViewById(R.id.textViewLongitude);
 
         imageViewId = (ImageView) findViewById(R.id.imageViewId);
         imageViewNumber = (ImageView) findViewById(R.id.imageViewNumber);
@@ -58,8 +65,12 @@ public class StreetPoleTwo extends AppCompatActivity {
         imageViewAntennaInstalation = (ImageView) findViewById(R.id.imageViewAntennaInstalation);
         imageViewConnection = (ImageView) findViewById(R.id.imageViewConnection);
         imageViewObservation = (ImageView) findViewById(R.id.imageViewObservation);
+        imageViewLatitude = (ImageView) findViewById(R.id.imageViewLatitude);
+        imageViewLongitude = (ImageView) findViewById(R.id.imageViewLongitude);
 
-        if(mm.getPoleOrDirection() == "Direction") {
+        setLatLong();
+
+        if (mm.getPoleOrDirection() == "Direction") {
 //            editTextId.setVisibility(View.GONE);
 //            editTextNumber.setVisibility(View.GONE);
 //            spinner.setVisibility(View.GONE);
@@ -67,6 +78,8 @@ public class StreetPoleTwo extends AppCompatActivity {
             editTextAntennaInstalation.setVisibility(View.GONE);
             editTextConnection.setVisibility(View.GONE);
             editTextObservation.setVisibility(View.GONE);
+            textViewLatitude.setVisibility(View.GONE);
+            textViewLongitude.setVisibility(View.GONE);
 
 //            imageViewId.setVisibility(View.GONE);
 //            imageViewNumber.setVisibility(View.GONE);
@@ -75,6 +88,8 @@ public class StreetPoleTwo extends AppCompatActivity {
             imageViewAntennaInstalation.setVisibility(View.GONE);
             imageViewConnection.setVisibility(View.GONE);
             imageViewObservation.setVisibility(View.GONE);
+            imageViewLatitude.setVisibility(View.GONE);
+            imageViewLongitude.setVisibility(View.GONE);
         }
 
         //Button NEXT(Start Camera)
@@ -124,13 +139,13 @@ public class StreetPoleTwo extends AppCompatActivity {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        if(mm.getPoleOrDirection() == "Direction") {
+        if (mm.getPoleOrDirection() == "Direction") {
             adapter.add("Norte");
             adapter.add("Sul");
             adapter.add("Leste");
             adapter.add("Oeste");
             adapter.add("Ponto Cardeal"); //HINT
-        }else {
+        } else {
             adapter.add("Primária");
             adapter.add("Secundária");
             adapter.add("Primária e Secundária");
@@ -157,6 +172,7 @@ public class StreetPoleTwo extends AppCompatActivity {
                 spinner.setSelection(adapter.getCount());
             }
         });
+
     }
 
     //Called when user requests to take picture
@@ -210,7 +226,7 @@ public class StreetPoleTwo extends AppCompatActivity {
         mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.",",");
         mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.",",");
 
-        if(requestCode == mm.REQUEST_IMAGE_CAPTURE){
+        if (requestCode == mm.REQUEST_IMAGE_CAPTURE) {
 
             //Copy the picture before drawing, so that we can have a backup
             try {
@@ -241,11 +257,20 @@ public class StreetPoleTwo extends AppCompatActivity {
         mm.appendImage();
     }
 
+    public void setLatLong() {
 
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        mm.dbLongitude = location.getLongitude();
+        mm.dbLatitude = location.getLatitude();
 
+        mm.sLatitude = String.format("%.6f", mm.dbLatitude).replaceAll("\\.",",");
+        mm.sLongitude = String.format("%.6f", mm.dbLongitude).replaceAll("\\.",",");
 
+        textViewLatitude.setText("Latitude: " + mm.sLatitude);
+        textViewLongitude.setText("Longitude: " + mm.sLongitude);
 
-
+    }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -63,6 +63,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextConnection" />
 
+
         <ImageView
             android:id="@+id/imageViewAntennaInstalation"
             android:layout_width="wrap_content"
@@ -99,8 +100,7 @@
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextObservation"
-            app:layout_constraintVertical_bias="0.504" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewLongitude" />
 
         <EditText
             android:id="@+id/editTextAntennaInstalation"
@@ -114,12 +114,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextEquipmentInstalation" />
 
+
         <ImageView
             android:id="@+id/imageViewObservation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/editTextObservation"
             app:layout_constraintEnd_toStartOf="@+id/editTextObservation"
@@ -139,8 +139,7 @@
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextObservation"
-            app:layout_constraintVertical_bias="0.504" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewLongitude" />
 
         <EditText
             android:id="@+id/editTextNumber"
@@ -164,6 +163,57 @@
             app:layout_constraintEnd_toStartOf="@+id/editTextConnection"
             app:layout_constraintTop_toTopOf="@+id/editTextConnection"
             app:srcCompat="@drawable/icon_connection" />
+
+        <TextView
+            android:id="@+id/textViewLatitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Latitude: "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextObservation" />
+
+        <ImageView
+            android:id="@+id/imageViewLatitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewLatitude"
+            app:layout_constraintEnd_toStartOf="@+id/textViewLatitude"
+            app:layout_constraintTop_toTopOf="@+id/textViewLatitude"
+            app:srcCompat="@drawable/icon_latitude" />
+
+        <TextView
+            android:id="@+id/textViewLongitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Longitude: "
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLatitude" />
+
+        <ImageView
+            android:id="@+id/imageViewLongitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewLongitude"
+            app:layout_constraintEnd_toStartOf="@+id/textViewLongitude"
+            app:layout_constraintTop_toTopOf="@+id/textViewLongitude"
+            app:srcCompat="@drawable/icon_longitude" />
 
         <EditText
             android:id="@+id/editTextConnection"

@@ -18,6 +18,8 @@ Before taking a picture, the user must decide whether he or she is going to take
 + Connection: 
 + Observation: 
 
+*_Will be visible in the picture afterwards_
+
 <img src="images/001ScreenS.png" align="left" width="360" height="758">
 
 <img src="images/002ScreenS.png" width="360" height="758">
@@ -25,8 +27,6 @@ Before taking a picture, the user must decide whether he or she is going to take
 <img src="images/003ScreenS.png" align="left" width="360" height="758">
 
 <img src="images/004ScreenS.png" width="360" height="758">
-
-*_Will be visible in the picture afterwards_
 
 ### Cardinal Direction
 

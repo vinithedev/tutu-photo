@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
@@ -52,8 +54,8 @@ public class MyManager {
 
     public boolean myPole = true;
 
-    double dbLatitude, dbLongitude;
-    String sLatitude, sLongitude;
+    public static double dbLatitude, dbLongitude;
+    public static String sLatitude, sLongitude;
 
     // null, "First Image" , "Other Image" or "Very First Image"
     String nextAppendType;
@@ -420,16 +422,6 @@ public class MyManager {
             return result;
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
 

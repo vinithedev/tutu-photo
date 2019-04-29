@@ -1,30 +1,42 @@
 # Tutu Photo
-Custom android picture taker
 
-# USE CASE
+Tutu Photo is a custom android picture taker made for electrical engineers that will have to go out, photograph street poles and write down all the info.
+
+The app will, automatically make a .docx file with infos, save the original photo file and an edited photo file in the phone and append infos and the edited photo into the .docx file.
 
 ## Input
 
-Before taking a picture, the user must inform:
+Before taking a picture, the user must decide whether he or she is going to take a picture of the Street Pole or Cardinal Direction. Then, he or she can inform:
 
-* ID<strong>*</strong>: 
-* Number<strong>*</strong>: 
-* Network: (primary, secondary or both)
-* Equipment instalation: 
-* Antenna instalation: 
-* Connection: 
-* Observation: 
+### Street Pole
+
++ ID<strong>*</strong>: 
++ Number<strong>*</strong>: 
++ Network: (primary, secondary or both)
++ Equipment instalation: 
++ Antenna instalation: 
++ Connection: 
++ Observation: 
+
+<img src="images/001ScreenS.png" align="left" width="360" height="758">
+
+<img src="images/002ScreenS.png" width="360" height="758">
+
+<img src="images/003ScreenS.png" align="left" width="360" height="758">
+
+<img src="images/004ScreenS.png" width="360" height="758">
 
 *_Will be visible in the picture afterwards_
 
+### Cardinal Direction
+
++ ID<strong>*</strong>: 
++ Number<strong>*</strong>: 
++ Direction: (north, south, west, east)
+
 ## Output
-* The app will return a raw copy of the picture.
-* The app will return a picture with the **ID** and **Number** as follows: 
 
-![Tutu sample](https://i.imgur.com/mCkL0Je.jpg)
-
-* Automatically, the app will locate user's current **latitude** and **longitude**.
-
-* One of each **.doc** and **.xls** files will be created to store all the data(if not created yet).
-
-* Pictures will be stored at ***/storage/emulated/0/DCIM/Tutu*** with ***TUTU_yyyyMMdd_HHmmss.jpg*** name format
++ The user can decline saving the picture and then click again to take another picture.
++ After taking and confirming a picture, the app will store it's raw and edited file at ***/storage/emulated/0/DCIM/Tutu*** with ***TUTU_yyyyMMdd_HHmmss.jpg*** name format for the picture image and ***TUTU_O_yyyyMMdd_HHmmss.jpg*** for the raw picture.
++ A **.docx** file will be created(if not created yet) and filled with all the data previously informed at ***/storage/emulated/0/Documents/Tutu*** with ***Site Survey.docx*** file name.
+ 

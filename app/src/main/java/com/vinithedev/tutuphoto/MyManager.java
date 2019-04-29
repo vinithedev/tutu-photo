@@ -54,8 +54,8 @@ public class MyManager {
 
     public boolean myPole = true;
 
-    double dbLatitude, dbLongitude;
-    String sLatitude, sLongitude;
+    public static double dbLatitude, dbLongitude;
+    public static String sLatitude, sLongitude;
 
     // null, "First Image" , "Other Image" or "Very First Image"
     String nextAppendType;

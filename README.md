@@ -1,6 +1,6 @@
 # Tutu Photo
 
-Tutu Photo is a custom android picture taker made for electrical engineers that will have to go out, photograph street poles and write down all the info.
+Tutu Photo is a custom Android picture taker. It have been built to simplify the routine of electrical engineers that, routinely, go outside, photograph street poles and write down many information about it.
 
 The app will, automatically make a .docx file with infos, save the original photo file and an edited photo file in the phone and append infos and the edited photo into the .docx file.
 
